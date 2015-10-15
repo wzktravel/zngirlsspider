@@ -18,11 +18,11 @@ public class ImagePipeline extends FilePersistentBase implements Pipeline {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private String galleryFiledName = "";
-    private String imageFiledName = "";
+    private String galleryFiledName = "gallery";
+    private String imageFiledName = "images";
 
     public ImagePipeline() {
-        setPath("/data/webmagic");
+        setPath("./data/webmagic");
     }
 
     public ImagePipeline(String path) {
@@ -35,11 +35,16 @@ public class ImagePipeline extends FilePersistentBase implements Pipeline {
             String gallery = (String)resultItems.get(galleryFiledName);
             List<String> images = resultItems.get(imageFiledName);
 
-            for (String image : images) {
-                String imagestr = ImageUtils.getImageBase64(null); //TODO œ¬‘ÿÕº∆¨
-            }
+            String imageStr = resultItems.get("imageStr");
+            String url = resultItems.get("url");
+            byte[] imageBytes = ImageUtils.getDataFromBase64(imageStr);
+            String path = getFilepath(mpath, "xxx", url);
+
+            checkAndMakeParentDirecotry(path);
+            ImageUtils.saveAsImage(path, imageBytes);
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.warn("write file error", e);
         }
     }
@@ -51,6 +56,7 @@ public class ImagePipeline extends FilePersistentBase implements Pipeline {
             path.append(gallery).append(PATH_SEPERATOR);
         }
         path.append(ImageUtils.convertUrlToFilename(imageurl));
+        path.append(".jpg");
         return path.toString();
     }
 

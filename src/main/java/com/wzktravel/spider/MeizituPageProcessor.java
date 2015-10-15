@@ -1,5 +1,7 @@
 package com.wzktravel.spider;
 
+import com.wzktravel.downloader.ImageDownloader;
+import com.wzktravel.pipeline.ImagePipeline;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -7,7 +9,10 @@ import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wzk on 15/10/14.
@@ -15,6 +20,8 @@ import java.util.List;
 public class MeizituPageProcessor implements PageProcessor {
 
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
+
+    private static List<String> imageurls = new ArrayList();
 
     public void process(Page page) {
         try {
@@ -24,6 +31,12 @@ public class MeizituPageProcessor implements PageProcessor {
             page.addTargetRequests(pages);
             page.addTargetRequests(galleries);
 
+            String imageStr = page.getRawText();
+            String url = page.getRequest().getUrl();
+            page.putField("url", url);
+            page.putField("imageStr", imageStr);
+
+
             if (page.getUrl().regex(".*/a/\\d+.html").match()) {
                 String galleryName = page.getHtml().xpath("//div[@class='metaRight']/h2/a/text()").toString();
                 List<String> images = page.getHtml().xpath("//div[@id='picture']/p/img/@src").all();
@@ -31,6 +44,7 @@ public class MeizituPageProcessor implements PageProcessor {
                     page.putField("galleryName", galleryName);
                     page.putField("images", images);
                 }
+                imageurls.addAll(images);
             } else {
 
             }
@@ -44,10 +58,12 @@ public class MeizituPageProcessor implements PageProcessor {
     }
 
     public static void main(String[] args) {
-        String ourl = "http://www.meizitu.com/a/qingchun_3_1.html";
+//        String ourl = "http://www.meizitu.com/a/qingchun_3_1.html";
 //        String ourl = "http://www.meizitu.com/a/5047.html";
+        String ourl = "http://pic.meizitu.com/wp-content/uploads/2015a/09/18/01.jpg";
         Spider.create(new MeizituPageProcessor()).addUrl(ourl).addPipeline(new ConsolePipeline())
-                .addPipeline(new JsonFilePipeline("logs")).thread(5).run();
+                .addPipeline(new ImagePipeline()).setDownloader(new ImageDownloader()).thread(5).run();
 
+        Map<String, String> map = new HashMap();
     }
 }

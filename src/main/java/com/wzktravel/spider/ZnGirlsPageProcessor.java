@@ -19,7 +19,6 @@ public class ZnGirlsPageProcessor implements PageProcessor,AfterExtractor {
     private Site site = Site.me().setRetryTimes(3).setSleepTime(100);
     private static final String GALLERY_REGX = "http://www.zngirls.com/g/\\d+(/\\d+\\.html)?";
 
-    @Override
     public void process(Page page) {
 
         // 人物列表
@@ -65,12 +64,10 @@ public class ZnGirlsPageProcessor implements PageProcessor,AfterExtractor {
         }
     }
 
-    @Override
     public void afterProcess(Page page) {
 
     }
 
-    @Override
     public Site getSite() {
         return site;
     }

@@ -13,22 +13,20 @@ import java.io.OutputStream;
  */
 public class ImageUtils {
 
-    public static String PATH_SEPERATOR = "/";
-
     /**
-     * ½«Í¼Æ¬ÎÄ¼ş×ª»¯Îª×Ö½ÚÊı×é×Ö·û´®£¬²¢¶ÔÆä½øĞĞBase64±àÂë´¦Àí
+     * å°†å›¾ç‰‡æ–‡ä»¶è½¬åŒ–ä¸ºå­—èŠ‚æ•°ç»„å­—ç¬¦ä¸²ï¼Œå¹¶å¯¹å…¶è¿›è¡ŒBase64ç¼–ç å¤„ç†
      */
     public static String getImageBase64(byte[] data) {
-        //¶Ô×Ö½ÚÊı×éBase64±àÂë
+        //å¯¹å­—èŠ‚æ•°ç»„Base64ç¼–ç 
         BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data);//·µ»ØBase64±àÂë¹ıµÄ×Ö½ÚÊı×é×Ö·û´®
+        return encoder.encode(data);//è¿”å›Base64ç¼–ç è¿‡çš„å­—èŠ‚æ•°ç»„å­—ç¬¦ä¸²
     }
 
     /**
-     * ¶Ô×Ö½ÚÊı×é×Ö·û´®½øĞĞBase64½âÂë
+     * å¯¹å­—èŠ‚æ•°ç»„å­—ç¬¦ä¸²è¿›è¡ŒBase64è§£ç 
      */
     public static byte[] getDataFromBase64(String imgStr) {
-        if (imgStr == null || imgStr.trim().length() < 1) { //Í¼ÏñÊı¾İÎª¿Õ
+        if (imgStr == null || imgStr.trim().length() < 1) { //å›¾åƒæ•°æ®ä¸ºç©º
             return null;
         }
         byte[] b = null;
@@ -36,7 +34,7 @@ public class ImageUtils {
             BASE64Decoder decoder = new BASE64Decoder();
             b = decoder.decodeBuffer(imgStr);
             for (int i = 0; i < b.length; ++i) {
-                if (b[i] < 0) {//µ÷ÕûÒì³£Êı¾İ
+                if (b[i] < 0) {//è°ƒæ•´å¼‚å¸¸æ•°æ®
                     b[i] += 256;
                 }
             }
@@ -47,7 +45,7 @@ public class ImageUtils {
     }
 
     /**
-     * ±£´æÍ¼Æ¬µ½±¾µØ
+     * ä¿å­˜å›¾ç‰‡åˆ°æœ¬åœ°
      */
     public static boolean saveAsImage(String file, byte[] bytes) {
         try {
@@ -63,7 +61,7 @@ public class ImageUtils {
     }
 
     /**
-     * ½«url×ª»»ÎªÎÄ¼şÃû£¬¼ÆËãmd5
+     * å°†urlè½¬æ¢ä¸ºæ–‡ä»¶åï¼Œè®¡ç®—md5
      */
     public static String convertUrlToFilename(String imageurl) {
         return DigestUtils.md5Hex(imageurl);
