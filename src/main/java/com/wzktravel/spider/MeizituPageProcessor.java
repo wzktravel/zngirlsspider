@@ -16,7 +16,6 @@ public class MeizituPageProcessor implements PageProcessor {
 
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
 
-    @Override
     public void process(Page page) {
         try {
             List<String> pages = page.getHtml().xpath("//div[@id='wp_page_numbers']/ul/li/a/@href").regex("qingchun_\\d_\\d.html").all();
@@ -40,7 +39,6 @@ public class MeizituPageProcessor implements PageProcessor {
         }
     }
 
-    @Override
     public Site getSite() {
         return site;
     }
