@@ -1,8 +1,10 @@
 package com.wzktravel.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import sun.swing.StringUIClientPropertyKey;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -64,7 +66,11 @@ public class ImageUtils {
      * 将url转换为文件名，计算md5
      */
     public static String convertUrlToFilename(String imageurl) {
-        return DigestUtils.md5Hex(imageurl);
+        if (StringUtils.isNotEmpty(imageurl)) {
+            return DigestUtils.md5Hex(imageurl);
+        } else {
+            return StringUtils.EMPTY;
+        }
     }
 
 }

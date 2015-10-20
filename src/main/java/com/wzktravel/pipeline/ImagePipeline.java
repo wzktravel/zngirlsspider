@@ -32,13 +32,15 @@ public class ImagePipeline extends FilePersistentBase implements Pipeline {
     public void process(ResultItems resultItems, Task task) {
         try {
             String mpath = task.getUUID();
-            String gallery = (String)resultItems.get(galleryFiledName);
-            List<String> images = resultItems.get(imageFiledName);
+            String gallery = resultItems.get(galleryFiledName);
 
             String imageStr = resultItems.get("imageStr");
             String url = resultItems.get("url");
+            if (StringUtils.isEmpty(url) || StringUtils.isEmpty(imageStr)) {
+                return;
+            }
             byte[] imageBytes = ImageUtils.getDataFromBase64(imageStr);
-            String path = getFilepath(mpath, "xxx", url);
+            String path = getFilepath(mpath, gallery, url);
 
             checkAndMakeParentDirecotry(path);
             ImageUtils.saveAsImage(path, imageBytes);
@@ -52,7 +54,7 @@ public class ImagePipeline extends FilePersistentBase implements Pipeline {
     public String getFilepath(String mpath, String gallery, String imageurl) {
         StringBuilder path = new StringBuilder(getPath());
         path.append(PATH_SEPERATOR).append(mpath).append(PATH_SEPERATOR);
-        if (StringUtils.isEmpty(gallery)) {
+        if (StringUtils.isNotEmpty(gallery)) {
             path.append(gallery).append(PATH_SEPERATOR);
         }
         path.append(ImageUtils.convertUrlToFilename(imageurl));
