@@ -6,15 +6,14 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
-import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * MeizituPageProcessor
  * Created by wzk on 15/10/14.
  */
 public class MeizituPageProcessor implements PageProcessor {
@@ -60,7 +59,7 @@ public class MeizituPageProcessor implements PageProcessor {
 //        String ourl = "http://www.meizitu.com/a/5151.html";
 //        String ourl = "http://pic.meizitu.com/wp-content/uploads/2015a/09/18/01.jpg";
         Spider.create(new MeizituPageProcessor()).addUrl(ourl).addPipeline(new ConsolePipeline())
-                .addPipeline(new ImagePipeline()).setDownloader(new ImageDownloader()).thread(5).run();
+            .addPipeline(new ImagePipeline()).setDownloader(new ImageDownloader()).thread(5).run();
 
         Map<String, String> map = new HashMap();
     }

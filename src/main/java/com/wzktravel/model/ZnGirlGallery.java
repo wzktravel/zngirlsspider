@@ -30,7 +30,6 @@ public class ZnGirlGallery extends Model<ZnGirlGallery> implements AfterExtracto
     @ExtractBy(value = "//ul[@id='hgallery']/img/@src", multi = true)
     private List<String> images;
 
-    @Override
     public void afterProcess(Page page) {
         System.out.println("xxxxxxxxxxx");
         if (page.getUrl().regex(GALLERY_REGX).match()) {
